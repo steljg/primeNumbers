@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>PrimePattern</title>
+  <link rel="stylesheet" href="PrimePattern/canvas.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+  <canvas id="canvas">
+    <script type="text/javascript">
+      var canvas = document.getElementById("canvas");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      var pxWidthMid = Math.floor(document.getElementById("canvas").offsetWidth) / 2;
+      var pxHeightMid = Math.floor(document.getElementById("canvas").offsetHeight) / 2;
+      var ctx = canvas.getContext("2d");
+      var cubeL = 1;
+      increment(ctx, pxWidthMid, pxHeightMid, cubeL);
+
+      function increment(ctx, pxWidthMid, pxHeightMid, cubeL) {
+        var number = 1000000;
+        var iprev = false;
+        var prevDir = "o";
+        var loopTimes = 1;
+        var loopCountDown = 0;
+        var posY = 0;
+        var posX = 0;
+
+        for (var i = 1; i <= number; i++) {
+          var iP = isPrime(i);
+            if (prevDir == "o") {
+              loopCountDown = loopTimes;
+              posY = pxHeightMid;
+              posX = pxWidthMid;
+              drawCube(ctx, posX, posY, iP, cubeL);
+              loopCountDown--;
+              if (loopCountDown == 0){
+                prevDir = "u";
+                loopCountDown = loopTimes;
+              }
+            } else if (prevDir == "u") {
+              posY = posY - cubeL;
+              drawCube(ctx, posX, posY, iP, cubeL);
+              loopCountDown--;
+              if (loopCountDown == 0){
+                prevDir = "r";
+                loopCountDown = loopTimes;
+              }
+            } else if (prevDir == "r") {
+              posX = posX + cubeL;
+              drawCube(ctx, posX, posY, iP, cubeL);
+              loopCountDown--;
+              if (loopCountDown == 0){
+                prevDir = "d";
+                loopTimes++;
+                loopCountDown = loopTimes;
+              }
+            } else if (prevDir == "d") {
+              posY = posY + cubeL;
+              drawCube(ctx, posX, posY, iP, cubeL);
+              loopCountDown--;
+              if (loopCountDown == 0){
+                prevDir = "l"
+                loopCountDown = loopTimes;
+              }
+            } else if (prevDir == "l") {
+              posX = posX - cubeL;
+              drawCube(ctx, posX, posY, iP, cubeL);
+              loopCountDown--;
+              if (loopCountDown == 0){
+                prevDir = "u";
+                loopTimes++;
+                loopCountDown = loopTimes;
+              }
+          }
+        }
+      }
+
+      function isPrime(num) {
+        if (num < 1) {
+          return false;
+        }
+        for (var i = 2; i < num; i++) {
+          if (num % i == 0) {
+            return false;
+          }
+        }
+        return true;
+      }
+
+      function drawCube(ctx, pxWidthMid, pxHeightMid, iP, cubeL) {
+        if (iP) {
+          //ctx.fillRect(x,y,width,height);
+          ctx.fillStyle = "red";
+          ctx.fillRect(pxWidthMid, pxHeightMid, cubeL, cubeL);
+        } else {
+          ctx.fillStyle = "white";
+          ctx.fillRect(pxWidthMid, pxHeightMid, cubeL, cubeL);
+        }
+      }
+    </script>
+  </canvas>
+</body>
+
+</html>
